@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=11">
+	<title>Document</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+	<link rel="stylesheet" href="./bootstrap.min.css">
+	<link rel="stylesheet" href="./style.css">
+	<link href="css/bootstrap.css" rel="stylesheet">
+	<script src="js/bootstrap.js"></script>
+	<!--script src="script/jquery.easypiechart.min.js"></script-->
+	<script src="script/jquery-2.1.1.js"></script>
+</head>
+<style>
+	body{
+		background:#eaeaea;
+	}
+	.nav-menu{
+		display: table;
+		justify-content: center;
+		background: #ffffff;
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		border-bottom: 1px solid #ddd;
+		text-align: left;
+		font-size: 0;
+	}
+	.nav-menu > li{
+		position:relative;
+		display: inline-block;
+		border-right: 1px solid #e3e3e3;
+		font-size: 14px;
+		list-style: none;
+		line-height: 2.3;
+		padding: 8px 25px;
+		cursor: pointer;
+	}
+	.nav-menu > li:first-child {
+		border-left: 1px solid #e3e3e3;
+	}
+	.table{
+		margin:0;
+	}
+	.ibox-content{
+		padding:8px;
+	}
+	.table, .ibox-content{
+		border: 1px solid #ddd !important;
+	}
+	.nav-menu > li:hover{
+		background: #1c84c6;
+	}
+	.nav-menu > li:hover span{
+		color:#ffffff;
+	}
+	.nav-top{
+		text-align: center;
+		background:#ffffff;
+	}
+	.nav-menu li ul{
+		background: #ffffff;
+		border: 1px solid #1ab394;
+		display: none;
+		position: absolute;
+		/* top: 0; */
+		width: 128px;
+		z-index: 999;
+		font-size: 12.5px;
+		top: 48px;
+		list-style: none;
+		padding: 0;
+		left: 0;
+	}
+	.nav-menu li ul li{
+		padding: 8px 10px;
+	}
+	.nav-top li:hover ul{
+		display: block;
+	}
+	.header_admin:hover i{
+		color:#ffffff;
+	}
+	.nav-menu > li span{
+		font-size: 14px;
+		font-weight: 600;
+	}
+	.ico{
+		position: absolute;
+		top: 50%;
+		left: 8px;
+		width: 20px;
+		height: 20px;
+		transform: translatey(-50%);
+		cursor: pointer;
+	}
+	.toggle-side-bar-btn > div{
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 20%;
+		background-color: #000000;
+	}
+	.ico > div:nth-child(2) {
+		top:40%;
+		transition:visibility 0s .15s;
+	}
+	.ico.active > div:nth-child(2) {
+		visibility:hidden;
+		transition:visibility 0s;
+	}
+	.ico > div:nth-child(3) {
+		top:80%;
+	}
+	body{
+		font-size:12px;
+	}
+	.title-bg{
+		vertical-align:middle !important;
+		text-align : center;
+		font-size:12px;
+		background:#F5F5F6 !important;
+		font-weight:bold;
+	}
+	.middeC > th, .middeC > td{
+		vertical-align:middle !important;
+	}
+	.hidden{
+		display:none;
+	}
+	td{
+		text-align : center;
+	}
+	#equipmentList .form-control{
+		font-size:12px;
+	}
+	.modal-header h5{
+		margin:0;
+	}
+	.modal-header{
+		padding:15px !important;
+	}
+	.table-bordered > thead > tr > th,
+	.table-bordered > tbody > tr > th,
+	.table-bordered > tfoot > tr > th,
+	.table-bordered > thead > tr > td,
+	.table-bordered > tbody > tr > td,
+	.table-bordered > tfoot > tr > td{
+		border:1px solid #dddddd;
+	}
+	.customerTb > thead > tr > th{
+		background:#ffffff;
+	}
+	.input-group-btn button{
+		border: 1px solid #ddd;
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
+	}
+	#equipmentList.table-hover tbody tr:hover{
+		background:rgb(255 255 255) !important;
+	}
+	.bTd{
+		color: rgb(0 0 0) !important;
+	}
+	.cTd{
+		color: rgb(0 153 255) !important;
+	}
+	.mTd{
+		color: rgb(204 51 0) !important;
+	}
+	.yTd{
+		color: rgb(247 201 16) !important
+	}
+	.gTd{
+		color: rgb(26 179 148) !important;
+	}
+	.table-hover > tbody > tr:nth-child(1) > td{
+		color:#ffffff;
+	}
+	.modal-body{
+		max-height:670px;
+		overflow: auto;
+	}
+	.modal-footer button{
+		border: 1px solid #dddddd;
+	}
+	.modal-body .table{
+		background:#ffffff;
+	}
+	#IpAdd{
+		float:right;
+	}
+	.table_title{
+		position:relative;
+		top:7px;
+	}
+	.btn{
+		background-color:#ffff;
+		color:#000;
+	}
+	th{
+		background-color:#1a7bb9 !important;
+		color:#fff;
+	}
+</style>
+<script type="text/javascript">
+	$(document).ready(function(){
+		if("<%=configData[0].ipset.length%>"){
+			var ipSetCnt = parseInt("<%=configData[0].ipset.length%>");
+		}else{
+			var ipSetCnt = 1;
+		}
+		$("#modelSearchMd").on("click", function(){
+			$("#modalSetup").modal('show');
+		});
+		$(".oidSet").on("click", function(){
+			$("#oidSetModal").modal('show');
+		});
+		$("#customerSearchLi").on("click", function(){
+			$("#customerSearch").modal('show');
+		});
+		$('.ipSetting').on('click',function(){
+			$('#IpsettingModal').modal('show');
+		});
+		$(".btn_close").on("click",function(){
+			$('#IpsettingModal').modal('hide');
+		});
+		$("#modelSearchBtn").on("click", function(){
+			$.ajax({
+				type: "POST",
+				url: "/modelSearch",
+				datatype:"JSON",
+				async: true,
+				data: {
+					"searchIp" : $("#searchIp").val()
+				},
+				success: function(result){
+					$(".manufacturerMd").text("");
+					$(".manufacturerMd").text(result.desc);
+					$(".modelNameMd").text("");
+					$(".modelNameMd").text(result.modelName);
+					$(".serialNumMd").text("");
+					$(".serialNumMd").text(result.seralNum);
+					$(".modelSearchTb").removeClass("hidden");
+				}
+			});
+		});
+		$("#customerSearchBtn").on("click", function(){
+			$.ajax({
+				type: "POST",
+				url: "/customerSearch",
+				datatype:"JSON",
+				async: true,
+				data: {
+					"mode" : "customerSearch",
+					"customerSearchVal" : $("#customerName").val()
+				},
+				success: function(result){
+					var textHtml = "";
+					textHtml += '<tr>';
+					textHtml +=	'<table>';
+					textHtml +=		'<tbody>';
+					textHtml +=			'<tr>';
+					textHtml +=				'<td>사업자 등록번호</td>';
+					textHtml +=				'<td>거래처명</td>';
+					textHtml +=				'<td>대표자</td>';
+					textHtml +=				'<td>주소</td>';
+					textHtml +=				'<td>선택</td>';
+					textHtml +=			'</tr>';
+					$.each(result, function(key, value){
+						textHtml += '<tr>';
+						textHtml +=	'<td>'+value.f_CustomerNumber+'</td>';
+						textHtml +=	'<td>'+value.f_CustomerName+'</td>';
+						textHtml +=	'<td>'+value.f_CustomerCeo+'</td>';
+						textHtml +=	'<td>'+value.f_CustomerAddr1+ " " +value.f_CustomerAddr2+'</td>';
+						textHtml +=	'<td><button class="btn btn-primary btn-sm" onclick="javascript:customerS(\''+value.seq+'\', \''+value.f_CustomerName+'\')">선택</button></td>';
+						textHtml += '</tr>';
+					});
+					textHtml +=		'</tbody>';
+					textHtml +=	'</table>';
+					textHtml += '</tr>';
+					var trCnt = $(".customerTb tr").length;
+					if(trCnt == 3){
+						$(".customerTb tbody:last").remove();
+					}
+					$(".customerTb > tbody:last").append(textHtml);
+				}
+			});
+		});
+		$(".modelAdd").on("click", function(){
+			var modelName = $(".modelNameMd").text();;
+			var serialNum = $(".serialNumMd").text();
+			var desc = $(".manufacturerMd").text();
+			var ip = $("#searchIp").val();
+			$.ajax({
+				type: "POST",
+				url: "/modelAdd",
+				datatype:"JSON",
+				async: true,
+				data: {
+					"modelName" : modelName,
+					"serialNum" : serialNum,
+					"desc"		: desc,
+					"ip"	: ip
+				},
+				success: function(result){
+					if(result == "N"){
+						alert("등록된 장비가 있습니다.");
+					}else if(result == "Y"){
+						alert("등록 되었습니다.");
+						location.reload();
+					}
+				}
+			});
+		});
+		$('#IpAdd').on('click',function(){
+			$('.Iptbody').append('<tr class="ipTr'+(ipSetCnt+1)+'"><td class="text-center" colspan="4"><div class="input-group"><input type="text" class="form-control input-sm" name="ipset" value=""><div class="input-group-btn"><button class="btn btn-white btn-sm ipDel" type="button" value="'+(ipSetCnt+1)+'"><span class="fa fa-trash" style="color:red;"></span></button></div></div></td></tr>');
+			ipSetCnt++;
+			$('.ipDel').on('click',function(){
+				$(".ipTr"+$(this).val()).remove();
+			});
+		});
+		$('.ipDel').on('click',function(){
+			$(".ipTr"+$(this).val()).remove();
+		});
+		$(".configSet").on("click", function(){
+			var formData = new FormData();
+			var form = $('#configSet').serializeArray();
+			$.each(form, function (key, input) {
+				formData.append(input.name, input.value);
+			});
+			$.ajax({
+				type: "POST",
+				url: "/configSet",
+				enctype: 'multipart/form-data',
+				datatype:"text",
+				processData: false,
+				contentType: false,
+				async: true,
+				data: formData,
+				success: function(result){
+					alert("저장 되었습니다.");
+					$("#IpsettingModal").modal('hide');
+				}
+			});
+		});
+		$("#service").on("click", function(){
+			// Create a form
+			var mapForm = document.createElement("form");
+			mapForm.target = "_blank";
+			mapForm.method = "POST";
+			mapForm.action = "/service";
+
+
+
+			// Add the form to dom
+			document.body.appendChild(mapForm);
+
+			// Just submit
+			mapForm.submit();
+		});
+	});
+	function customerS(seq, name){
+		$.ajax({
+				type: "POST",
+				url: "/customerAdd",
+				datatype:"JSON",
+				async: true,
+				data: {
+					"seq" : seq,
+					"name" : name
+				},
+				success: function(result){
+					if(result == "Y"){
+						alert("등록 되었습니다.");
+						location.reload();
+					}
+				}
+		});
+		$("#customerLogo").text(name);
+	}
+	function equipmentModify(mode, bModelName, num, val){
+		$.ajax({
+				type: "POST",
+				url: "/equipmentModify",
+				datatype:"text",
+				async: true,
+				data: {
+					"mode"			: mode,
+					"bModelName"	: bModelName,
+					"num"			: num,
+					"val"			: val
+				},
+				success: function(result){
+					if(result == "Y"){
+						location.reload();
+					}
+				}
+		});
+	}
+	function valuePop(mode, idx){
+		var params = {
+			mode : mode,
+			idx : idx
+		};
+		post_to_urlPop("/valuePop", params, "POST", 900, 250);
+		/*
+		// Create a form
+		var mapForm = document.createElement("form");
+		mapForm.target = "_blank";
+		mapForm.method = "POST";
+		mapForm.action = "/valuePop";
+
+		// Create an input
+		var mapInput = document.createElement("input");
+		mapInput.type = "text";
+		mapInput.name = "mode";
+		mapInput.value = mode;
+		var mapInput2 = document.createElement("input");
+		mapInput2.type = "text";
+		mapInput2.name = "idx";
+		mapInput2.value = idx;
+
+		mapForm.appendChild(mapInput);
+		mapForm.appendChild(mapInput2);
+		document.body.appendChild(mapForm);
+
+		mapForm.submit();
+		*/
+	}
+	function linkList(idx){
+		var params = {
+			idx : idx
+		};
+		post_to_urlPop("/equipmentLink", params, "POST", 900, 250);
+	}
+	function post_to_urlPop(url, params,targetName, method,w,h) {
+		var result;
+		var form = document.createElement("form");
+		var setTarget = (targetName) ? targetName : "popupOpen";
+		form.setAttribute("method", method);
+		form.setAttribute("action", url);
+		if(w >= 750 && w <= 800){
+			w = 800;
+		}
+
+		if(typeof params == "string"){
+			params = JSON.parse(params);
+		}
+		for(var key in params) {
+			var hiddenField = document.createElement("input");
+			hiddenField.setAttribute("type", "hidden");
+			hiddenField.setAttribute("name", key);
+			hiddenField.setAttribute("value", params[key]);
+			form.appendChild(hiddenField);
+		}
+		console.log(form)
+		form.setAttribute("target", setTarget);
+		result = popupOpen(url,setTarget,w,h);
+		document.body.appendChild(form);
+		form.submit();
+		return result;
+	}
+	function popupOpen(url,title,w,h){
+		// 듀얼 모니터 고려한 윈도우 띄우기
+		var curX = window.screenLeft;
+		var curY = window.screenTop; // 현재 브라우저의 top 위치
+		var curWidth = document.body.clientWidth; // 현재 브라우저 높이값
+		var curHeight = document.body.clientHeight;
+
+		var nLeft = curX + (curWidth / 2) - (w / 2);
+		var nTop = curY + (curHeight / 2) - (h / 2);
+
+		if(w >= 750 && w <= 800){
+			w = 800;
+		}
+
+		if(window.devicePixelRatio > 1) {
+			w = w*window.devicePixelRatio;
+		}
+		var strOption = "";
+		strOption += "left=" + nLeft + "px,";
+		strOption += "top=" + nTop + "px,";
+		strOption += "width=" + w + "px,";
+		strOption += "height=" + h + "px,";
+		strOption += "toolbar=no,menubar=no,location=no,resizable=yes,status=yes,scrollbars=1";
+		var winObj = window.open(url,title,strOption);
+		if (winObj == null) {
+			swalMsg.alert("팝업 차단을 해제해주세요.");
+			return false;
+		}
+		return winObj;
+	}
+	function sortAdd(sort, idx){
+		$.ajax({
+				type: "POST",
+				url: "/equipmentModify",
+				datatype:"text",
+				async: true,
+				data: {
+					"mode"	: "sort",
+					"sort"	: sort,
+					"num"	: idx
+				},
+				success: function(result){
+				}
+		});
+	}
+</script>
+<body>
+	<div class="nav-top">
+		<ul class="nav-menu">
+			<li id="customerSearchLi">
+				<span id="customerLogo">
+					<%if(configData[0].customer){%>
+						<%=configData[0].customer.name%>
+					<%}else{%>
+						거래처 등록이 되어있지 않습니다.
+					<% } %>
+				</span>
+			</li>
+			<li id="modelSearchMd"><span>장비등록</span></li>
+			<!--li id="service"><span>서비스 요청</span></li-->
+			<li class="menu header_admin pull-right ipSetting" title="관리자메뉴">
+				<i class="fa fa-cog" style="animation: rotate 3s linear infinite"></i>
+			</li>
+		</ul>
+	</div>
+	<div class="col-lg-12 col-md-12 m-t">
+		<div class="ibox-content border-gray">
+			<table class="table table-bordered table-hover text-center" id="equipmentList">
+				<thead>
+					<tr class="middeC">
+						<th style="width:70px;">장비번호</th>
+						<th style="width:15%;">모델명</th>
+						<th style="width:15%;">S/N</th>
+						<th style="width:12%;">IP</th>
+						<th>Agent</th>
+						<th>CWIS</th>
+						<th>에러이력</th>
+						<th>oid</th>
+						<th>삭제</th>
+					<!--tr class="middeC">
+						<th rowspan="2" style="width:70px;">장비번호</th>
+						<th rowspan="2" style="width:15%;">모델명</th>
+						<th rowspan="2" style="width:15%;">S/N</th>
+						<th rowspan="2" style="width:12%;">IP</th>
+						<th colspan="4">Toner</th>
+						<th colspan="4">Drom</th>
+						<th colspan="2">ETC</th>
+						<th rowspan="2">에러이력</th>
+						<th rowspan="2">oid</th>
+						<th rowspan="2">업데이트 시간</th>
+						<th rowspan="2">삭제</th>
+					</tr>
+					<tr>
+						<th>K</th>
+						<th>C</th>
+						<th>M</th>
+						<th>Y</th>
+						<th>K</th>
+						<th>C</th>
+						<th>M</th>
+						<th>Y</th>
+						<th>WTC</th>
+						<th>FUSER</th>
+					</tr-->
+					</tr>
+				</thead>
+				<tbody>
+					<%if(equipmentData){%>
+						<%for(let i = 0; i < equipmentData.length; i++){%>
+							<tr class="middeC">
+								<td>
+									<button class="btn btn-primary btn-sm" onclick="javascript:linkList(<%=configData[0].customer.seq%>)">
+										<%if(equipmentData[i].sort){%>
+											<%=equipmentData[i].sort%>
+										<%}else{%>
+											연결
+										<% } %>
+									</button>
+								</td>
+								<td><input type="text" class="form-control input-sm" onBlur="javascript:equipmentModify('modelName', '<%=equipmentData[i].modelName%>', '<%=i%>', this.value);" value="<%=equipmentData[i].modelName%>"></td>
+								<td><input type="text" class="form-control input-sm" onBlur="javascript:equipmentModify('serialNum', '<%=equipmentData[i].serialNum%>', '<%=i%>', this.value);" value="<%=equipmentData[i].serialNum%>"></td>
+								<td><input type="text" class="form-control input-sm" onBlur="javascript:equipmentModify('ip', '<%=equipmentData[i].serialNum%>', '<%=i%>', this.value);" value="<%=equipmentData[i].ip%>"></td>
+								<td>
+									<%if(equipmentData[i].oidValue){%>
+										<button class="btn btn-primary btn-sm" onclick="javascript:valuePop('agent', <%=i;%>);"><%=equipmentData[i].oidValue.update_time%></button>
+									<%}else{%>
+										<button class="btn btn-danger btn-sm">미수집</button>
+									<% } %>
+								</td>
+								<td>
+									<%if(equipmentData[i].scirpingValue){%>
+										<button class="btn btn-primary btn-sm" onclick="javascript:valuePop('cwis', <%=i;%>);"><%=equipmentData[i].scirpingValue.count.update_time%></button>
+									<%}else{%>
+										<button class="btn btn-danger btn-sm">미수집</button>
+									<% } %>
+								</td>
+								<td>
+									<i class="fa fa-file-text-o" style="color:#FFBB00"></i>
+								</td>
+								<td>
+									<button class="btn btn-primary btn-sm oidSet"><i class="fa fa-cog" style="animation: rotate 3s linear infinite"></i></button>
+								</td>
+								<td>
+									<i class="fa fa-trash" style="color:red;"></i>
+								</td>
+							</tr>
+							<!--
+							<%if(equipmentData[i].oidValue){%>
+								<tr>
+									<td>Agent</td>
+									<%if(equipmentData[i].oidValue){%>
+										<td><%=Number(equipmentData[i].oidValue.total_color_print).toLocaleString()%></td>
+										<td><%=Number(equipmentData[i].oidValue.total_gray_print).toLocaleString()%></td>
+										<td><%=Number(equipmentData[i].oidValue.print_color_a3).toLocaleString()%></td>
+										<td><%=Number(equipmentData[i].oidValue.print_gray_a3).toLocaleString()%></td>
+										<%if(equipmentData[i].oidValue.printer_desc.indexOf("FUJI XEROX") != -1){%>
+											<td class="bTd"><%=Math.ceil(equipmentData[i].oidValue.toner_balck / equipmentData[i].somoMax.toner_balckMax * 100)%>%</td>
+											<td class="cTd"><%=Math.ceil(equipmentData[i].oidValue.toner_cyan / equipmentData[i].somoMax.toner_cyanMax * 100)%>%</td>
+											<td class="mTd"><%=Math.ceil(equipmentData[i].oidValue.toner_magenta / equipmentData[i].somoMax.toner_magentaMax * 100)%>%</td>
+											<td class="yTd"><%=Math.ceil(equipmentData[i].oidValue.toner_yellow / equipmentData[i].somoMax.toner_yellowMax * 100)%>%</td>
+											<td class="bTd"><%=Math.ceil(equipmentData[i].oidValue.drum_balck / equipmentData[i].somoMax.drum_balckMax * 100)%>%</td>
+											<td class="cTd"><%=Math.ceil(equipmentData[i].oidValue.drum_cyan / equipmentData[i].somoMax.drum_cyanMax * 100)%>%</td>
+											<td class="mTd"><%=Math.ceil(equipmentData[i].oidValue.drum_magenta / equipmentData[i].somoMax.drum_magentaMax * 100)%>%</td>
+											<td class="yTd"><%=Math.ceil(equipmentData[i].oidValue.drum_yellow / equipmentData[i].somoMax.drum_yellowMax * 100)%>%</td>
+											<td class="gTd"><%=equipmentData[i].oidValue.etc_hoisu%></td>
+											<td class="gTd"><%=equipmentData[i].oidValue.etc_install%></td>
+											<td><%=equipmentData[i].oidValue.update_time%></td>
+										<%}else{%>
+											<td class="bTd"><%=equipmentData[i].oidValue.toner_balck%>%</td>
+											<td class="cTd"><%=equipmentData[i].oidValue.toner_cyan%>%</td>
+											<td class="mTd"><%=equipmentData[i].oidValue.toner_magenta%>%</td>
+											<td class="yTd"><%=equipmentData[i].oidValue.toner_yellow%>%</td>
+											<td class="bTd"><%=equipmentData[i].oidValue.drum_balck%>%</td>
+											<td class="cTd"><%=equipmentData[i].oidValue.drum_cyan%>%</td>
+											<td class="mTd"><%=equipmentData[i].oidValue.drum_magenta%>%</td>
+											<td class="yTd"><%=equipmentData[i].oidValue.drum_yellow%>%</td>
+											<td class="gTd"><%=equipmentData[i].oidValue.etc_hoisu%></td>
+											<td class="gTd"><%=equipmentData[i].oidValue.etc_install%></td>
+											<td><%=equipmentData[i].oidValue.update_time%></td>
+										<% } %>
+									<%}else{%>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+									<% } %>
+								</tr>
+							<% } %>
+							<%if(equipmentData[i].scirpingValue){%>
+								<tr>
+									<td>scriping</td>
+									<td><%=(Number(equipmentData[i].scirpingValue.count.total_color_print)+Number(equipmentData[i].scirpingValue.count.totol_color_copy)).toLocaleString()%></td>
+									<td><%=(Number(equipmentData[i].scirpingValue.count.total_gray_print)+Number(equipmentData[i].scirpingValue.count.totol_gray_copy)).toLocaleString()%></td>
+									<td></td>
+									<td></td>
+									<td class="bTd"><%=equipmentData[i].scirpingValue.somo.toner_balck%>%</td>
+									<td class="cTd"><%=equipmentData[i].scirpingValue.somo.toner_cyan%>%</td>
+									<td class="mTd"><%=equipmentData[i].scirpingValue.somo.toner_magenta%>%</td>
+									<td class="yTd"><%=equipmentData[i].scirpingValue.somo.toner_yellow%>%</td>
+									<td class="bTd"><%=equipmentData[i].scirpingValue.somo.drum_balck%>%</td>
+									<td class="cTd"><%=equipmentData[i].scirpingValue.somo.drum_cyan%>%</td>
+									<td class="mTd"><%=equipmentData[i].scirpingValue.somo.drum_magenta%>%</td>
+									<td class="yTd"><%=equipmentData[i].scirpingValue.somo.drum_yellow%>%</td>
+									<td class="gTd"><%=equipmentData[i].scirpingValue.somo.etc_hoisu%></td>
+									<td></td>
+									<td><%=equipmentData[i].scirpingValue.count.update_time%><br><%=equipmentData[i].scirpingValue.somo.update_time%></td>
+								</tr>
+							<% } %>
+							-->
+						<% } %>
+					<% } %>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="footer" style="background:#eaeaea">
+		<div class="copyRightArea">
+			<strong>Copyright</strong> © OfficeHub Co., Ltd. All right reserved.
+		</div>
+	</div>
+<div class="modal inmodal" id="modalSetup" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5>장비추가</h5>
+			</div>
+			<div class="modal-body">
+				<div class="table-responsive">
+					<table class="table table-bordered">
+						<thead>
+							<th colspan="4">IP</th>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="text-center" colspan="4">
+									<div class="input-group">
+										<input type="text" class="form-control input-sm" id="searchIp" value="">
+										<div class="input-group-btn">
+											<button id="modelSearchBtn" class="btn btn-white btn-sm" type="button">
+												<span class="fa fa-search"></span>
+											</button>
+										</div>
+									</div>
+									
+								</td>
+							</tr>
+							<tr class="modelSearchTb hidden">
+								<th class="text-center">제조사</th>
+								<th class="text-center">장비명</th>
+								<th class="text-center">S/N</th>
+								<th class="text-center"></th>
+							</tr>
+							<tr class="modelSearchTb hidden">
+								<td class="text-center manufacturerMd"></td>
+								<td class="text-center modelNameMd"></td>
+								<td class="text-center serialNumMd"></td>
+								<td class="text-center">
+									<button class="btn btn-white btn-sm modelAdd" type="button">
+										추가
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal inmodal" id="customerSearch" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5>거래처 검색</h5>
+			</div>
+			<div class="modal-body">
+				<div class="table-responsive">
+					<table class="table table-bordered customerTb">
+						<thead>
+							<th colspan="5">거래처명 또는 사업자번호</th>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="text-center" colspan="5">
+									<div class="input-group">
+										<input type="text" class="form-control input-sm" id="customerName" value="">
+										<input type="hidden" class="form-control input-sm" id="customerSeq" value="">
+										<div class="input-group-btn">
+											<button id="customerSearchBtn" class="btn btn-white btn-sm" type="button">
+												<span class="fa fa-search"></span>
+											</button>
+										</div>
+									</div>
+									
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-white btn_close" data-dismiss="modal">닫기</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal inmodal" id="IpsettingModal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5>수신 도메인 추가</h5>
+			</div>
+			<div class="modal-body">
+				<form id="configSet">
+					<table class="table table-bordered">
+						<tbody>
+							<tr>
+								<td class="title-bg">전송 주기 ex:) 1 ~ 5까지</td>
+								<td class="text-center">
+									<div class="input-group">
+										<%if(configData){%>
+											<input type="text" class="form-control input-sm" name="sendTime" value="<%=configData[0].sendTime%>">
+										<%}else{%>
+											<input type="text" class="form-control input-sm" name="sendTime" value="1">
+										<% } %>
+										<div class="input-group-btn">
+											<button id="" class="btn btn-white btn-sm">
+												분마다
+											</button>
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<table class="table table-bordered">
+						<thead>
+							<th colspan="4">
+								<span class="table_title">도메인</span>
+								<button id="IpAdd" class="btn btn-white btn-sm" type="button">
+									<span class="fa fa-plus"></span>
+								</button>
+							</th>
+						</thead>
+						<tbody class="Iptbody">
+							<%if(configData){%>
+								<%for(var i = 0; i < configData[0].ipset.length; i++){%>
+									<tr class="ipTr<%=i+1%>">
+										<td class="text-center" colspan="4">
+											<div class="input-group">
+												<input type="text" class="form-control input-sm" id="" name="ipset" value="<%=configData[0].ipset[i]%>">
+												<div class="input-group-btn">
+													<button id="" class="btn btn-white btn-sm ipDel" type="button" value="<%=i+1%>">
+														<span class="fa fa-trash" style="color:red;"></span>
+													</button>
+												</div>
+											</div>
+										</td>
+									</tr>
+								<% } %>
+							<%}else{%>
+								<tr class="ipTr1">
+									<td class="text-center" colspan="4">
+										<div class="input-group">
+											<input type="text" class="form-control input-sm" id="" name="ipset" value="">
+											<div class="input-group-btn">
+												<button id="" class="btn btn-white btn-sm ipDel" type="button" value="1">
+													<span class="fa fa-trash" style="color:red;"></span>
+												</button>
+											</div>
+										</div>
+									</td>
+								</tr>
+							<% } %>
+						</tbody>
+					</table>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-white configSet" data-dismiss="modal">저장</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal inmodal" id="oidSetModal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5>OID 정보</h5>
+			</div>
+			<div class="modal-body">
+				<table class="table table-bordered">
+					<tbody>
+						<tr><td class="title-bg" colspan="2">출력</td></tr>
+						<tr>
+							<td class="title-bg">전체</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">전체 흑백</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">흑백 A4</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">흑백 A3</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">전체 컬러</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">컬러 A4</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">컬러 A3</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">Two 컬러</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr><td class="title-bg" colspan="2">복사</td></tr>
+						<tr>
+							<td class="title-bg">전체</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">전체 흑백</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">흑백 A4</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">흑백 A3</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">전체 컬러</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">컬러 A4</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">컬러 A3</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">One 컬러</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">Two 컬러</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr><td class="title-bg" colspan="2">스캔</td></tr>
+						<tr>
+							<td class="title-bg">전체</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">전체 흑백</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">흑백 A4</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">흑백 A3</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">전체 컬러</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">컬러 A4</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">컬러 A3</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr><td class="title-bg" colspan="2">팩스</td></tr>
+						<tr>
+							<td class="title-bg">송신 횟수</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">송신 페이지수</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">수신 횟수</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">수신 페이지수</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr><td class="title-bg" colspan="2">토너</td></tr>
+						<tr>
+							<td class="title-bg">Black</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">Black2</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">Cyan</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr><td class="title-bg" colspan="2">드럼</td></tr>
+						<tr>
+							<td class="title-bg">Magenta</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">Yellow</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">Black</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">Cyan</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">Magenta</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">Yellow</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr><td class="title-bg" colspan="2">기타</td></tr>
+						<tr>
+							<td class="title-bg">회수통</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-bg">장착부</td>
+							<td class="text-center">
+								<div class="input-group">
+									<input type="text" class="form-control input-sm" id="" value="">
+									<div class="input-group-btn">
+										<button id="" class="btn btn-white btn-sm">
+											적용
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-white" data-dismiss="modal">저장</button>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

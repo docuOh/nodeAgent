@@ -1,0 +1,235 @@
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=11">
+	<title>Document</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+	<link rel="stylesheet" href="./bootstrap.min.css">
+	<link rel="stylesheet" href="./style.css">
+	<link href="css/bootstrap.css" rel="stylesheet">
+	<script src="js/bootstrap.js"></script>
+	<!--script src="script/jquery.easypiechart.min.js"></script-->
+	<script src="script/jquery-2.1.1.js"></script>
+</head>
+<style>
+	body{
+		background:#eaeaea;
+	}
+	.nav-menu{
+		display: table;
+		justify-content: center;
+		background: #ffffff;
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		border-bottom: 1px solid #ddd;
+		text-align: left;
+		font-size: 0;
+	}
+	.nav-menu > li{
+		position:relative;
+		display: inline-block;
+		border-right: 1px solid #e3e3e3;
+		font-size: 14px;
+		list-style: none;
+		line-height: 2.3;
+		padding: 8px 25px;
+		cursor: pointer;
+	}
+	.nav-menu > li:first-child {
+		border-left: 1px solid #e3e3e3;
+	}
+	.table{
+		margin:0;
+	}
+	.ibox-content{
+		padding:8px;
+	}
+	.table, .ibox-content{
+		border: 1px solid #ddd !important;
+	}
+	.nav-menu > li:hover{
+		background: #1c84c6;
+	}
+	.nav-menu > li:hover span{
+		color:#ffffff;
+	}
+	.nav-top{
+		text-align: center;
+		background:#ffffff;
+	}
+	.nav-menu li ul{
+		background: #ffffff;
+		border: 1px solid #1ab394;
+		display: none;
+		position: absolute;
+		/* top: 0; */
+		width: 128px;
+		z-index: 999;
+		font-size: 12.5px;
+		top: 48px;
+		list-style: none;
+		padding: 0;
+		left: 0;
+	}
+	.nav-menu li ul li{
+		padding: 8px 10px;
+	}
+	.nav-top li:hover ul{
+		display: block;
+	}
+	.header_admin:hover i{
+		color:#ffffff;
+	}
+	.nav-menu > li span{
+		font-size: 14px;
+		font-weight: 600;
+	}
+	.ico{
+		position: absolute;
+		top: 50%;
+		left: 8px;
+		width: 20px;
+		height: 20px;
+		transform: translatey(-50%);
+		cursor: pointer;
+	}
+	.toggle-side-bar-btn > div{
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 20%;
+		background-color: #000000;
+	}
+	.ico > div:nth-child(2) {
+		top:40%;
+		transition:visibility 0s .15s;
+	}
+	.ico.active > div:nth-child(2) {
+		visibility:hidden;
+		transition:visibility 0s;
+	}
+	.ico > div:nth-child(3) {
+		top:80%;
+	}
+	body{
+		font-size:12px;
+	}
+	.title-bg{
+		vertical-align:middle !important;
+		text-align : center;
+		font-size:12px;
+		background:#F5F5F6 !important;
+		font-weight:bold;
+	}
+	.middeC > th, .middeC > td{
+		vertical-align:middle !important;
+	}
+	.hidden{
+		display:none;
+	}
+	td{
+		text-align : center;
+	}
+	#equipmentList .form-control{
+		font-size:12px;
+	}
+	.modal-header h5{
+		margin:0;
+	}
+	.modal-header{
+		padding:15px !important;
+	}
+	.table-bordered > thead > tr > th,
+	.table-bordered > tbody > tr > th,
+	.table-bordered > tfoot > tr > th,
+	.table-bordered > thead > tr > td,
+	.table-bordered > tbody > tr > td,
+	.table-bordered > tfoot > tr > td{
+		border:1px solid #dddddd;
+	}
+	.customerTb > thead > tr > th{
+		background:#ffffff;
+	}
+	.input-group-btn button{
+		border: 1px solid #ddd;
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
+	}
+	#equipmentList.table-hover tbody tr:hover{
+		background:rgb(255 255 255) !important;
+	}
+	.bTd{
+		color: rgb(0 0 0) !important;
+	}
+	.cTd{
+		color: rgb(0 153 255) !important;
+	}
+	.mTd{
+		color: rgb(204 51 0) !important;
+	}
+	.yTd{
+		color: rgb(247 201 16) !important
+	}
+	.gTd{
+		color: rgb(26 179 148) !important;
+	}
+	.modal-body{
+		max-height:670px;
+		overflow: auto;
+	}
+	.modal-footer button{
+		border: 1px solid #dddddd;
+	}
+	.modal-body .table{
+		background:#ffffff;
+	}
+	#IpAdd{
+		float:right;
+	}
+	.table_title{
+		position:relative;
+		top:7px;
+	}
+	.btn{
+		background-color:#ffff;
+		color:#000;
+	}
+	th{
+		background-color:#1a7bb9 !important;
+		color:#fff;
+	}
+</style>
+<script type="text/javascript">
+	function add(sort, idx){
+		window.opener.sortAdd(sort, idx);
+		window.close();
+	}
+</script>
+<div class="col-lg-12 col-md-12 m-t">
+	<div class="ibox-content border-gray">
+		<table class="table table-bordered table-hover text-center" id="equipmentList">
+			<thead>
+				<th>장비번호</th>
+				<th>부서</th>
+				<th>장비명</th>
+				<th>S/N</th>
+				<th>IP</th>
+			</thead>
+			<tbody>
+				<%if(equipmentList){%>
+					<%for(let i = 0; i < equipmentList.length; i++){%>
+						<tr>
+							<td><button class="btn btn-primary btn-sm" onclick="javascript:add('<%=equipmentList[i].equipmentSort%>', <%=i;%>);"><%=equipmentList[i].equipmentSort%></button></td>
+							<td><%=equipmentList[i].f_buse%></td>
+							<td><%=equipmentList[i].modelName%></td>
+							<td><%=equipmentList[i].modelSerialNum%></td>
+							<td><%=equipmentList[i].modelIpAdrr%></td>
+						</tr>
+					<% } %>
+				<% } %>
+			</tbody>
+		</table>
+	</div>
+</div>

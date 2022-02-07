@@ -1,0 +1,319 @@
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=11">
+	<title>Document</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+	<link rel="stylesheet" href="./bootstrap.min.css">
+	<link rel="stylesheet" href="./style.css">
+	<link href="css/bootstrap.css" rel="stylesheet">
+	<script src="js/bootstrap.js"></script>
+	<!--script src="script/jquery.easypiechart.min.js"></script-->
+	<script src="script/jquery-2.1.1.js"></script>
+</head>
+<style>
+	body{
+		background:#eaeaea;
+	}
+	.nav-menu{
+		display: table;
+		justify-content: center;
+		background: #ffffff;
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		border-bottom: 1px solid #ddd;
+		text-align: left;
+		font-size: 0;
+	}
+	.nav-menu > li{
+		position:relative;
+		display: inline-block;
+		border-right: 1px solid #e3e3e3;
+		font-size: 14px;
+		list-style: none;
+		line-height: 2.3;
+		padding: 8px 25px;
+		cursor: pointer;
+	}
+	.nav-menu > li:first-child {
+		border-left: 1px solid #e3e3e3;
+	}
+	.table{
+		margin:0;
+	}
+	.ibox-content{
+		padding:8px;
+	}
+	.table, .ibox-content{
+		border: 1px solid #ddd !important;
+	}
+	.nav-menu > li:hover{
+		background: #1c84c6;
+	}
+	.nav-menu > li:hover span{
+		color:#ffffff;
+	}
+	.nav-top{
+		text-align: center;
+		background:#ffffff;
+	}
+	.nav-menu li ul{
+		background: #ffffff;
+		border: 1px solid #1ab394;
+		display: none;
+		position: absolute;
+		/* top: 0; */
+		width: 128px;
+		z-index: 999;
+		font-size: 12.5px;
+		top: 48px;
+		list-style: none;
+		padding: 0;
+		left: 0;
+	}
+	.nav-menu li ul li{
+		padding: 8px 10px;
+	}
+	.nav-top li:hover ul{
+		display: block;
+	}
+	.header_admin:hover i{
+		color:#ffffff;
+	}
+	.nav-menu > li span{
+		font-size: 14px;
+		font-weight: 600;
+	}
+	.ico{
+		position: absolute;
+		top: 50%;
+		left: 8px;
+		width: 20px;
+		height: 20px;
+		transform: translatey(-50%);
+		cursor: pointer;
+	}
+	.toggle-side-bar-btn > div{
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 20%;
+		background-color: #000000;
+	}
+	.ico > div:nth-child(2) {
+		top:40%;
+		transition:visibility 0s .15s;
+	}
+	.ico.active > div:nth-child(2) {
+		visibility:hidden;
+		transition:visibility 0s;
+	}
+	.ico > div:nth-child(3) {
+		top:80%;
+	}
+	body{
+		font-size:12px;
+	}
+	.title-bg{
+		vertical-align:middle !important;
+		text-align : center;
+		font-size:12px;
+		background:#F5F5F6 !important;
+		font-weight:bold;
+	}
+	.middeC > th, .middeC > td{
+		vertical-align:middle !important;
+	}
+	.hidden{
+		display:none;
+	}
+	td{
+		text-align : center;
+	}
+	#equipmentList .form-control{
+		font-size:12px;
+	}
+	.modal-header h5{
+		margin:0;
+	}
+	.modal-header{
+		padding:15px !important;
+	}
+	.table-bordered > thead > tr > th,
+	.table-bordered > tbody > tr > th,
+	.table-bordered > tfoot > tr > th,
+	.table-bordered > thead > tr > td,
+	.table-bordered > tbody > tr > td,
+	.table-bordered > tfoot > tr > td{
+		border:1px solid #dddddd;
+	}
+	.customerTb > thead > tr > th{
+		background:#ffffff;
+	}
+	.input-group-btn button{
+		border: 1px solid #ddd;
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
+	}
+	#equipmentList.table-hover tbody tr:hover{
+		background:rgb(255 255 255) !important;
+	}
+	.bTd{
+		color: rgb(0 0 0) !important;
+	}
+	.cTd{
+		color: rgb(0 153 255) !important;
+	}
+	.mTd{
+		color: rgb(204 51 0) !important;
+	}
+	.yTd{
+		color: rgb(247 201 16) !important
+	}
+	.gTd{
+		color: rgb(26 179 148) !important;
+	}
+	.modal-body{
+		max-height:670px;
+		overflow: auto;
+	}
+	.modal-footer button{
+		border: 1px solid #dddddd;
+	}
+	.modal-body .table{
+		background:#ffffff;
+	}
+	#IpAdd{
+		float:right;
+	}
+	.table_title{
+		position:relative;
+		top:7px;
+	}
+	.btn{
+		background-color:#ffff;
+		color:#000;
+	}
+	th{
+		background-color:#1a7bb9 !important;
+		color:#fff;
+	}
+</style>
+<div class="col-lg-12 col-md-12 m-t">
+	<div class="ibox-content border-gray">
+		<table class="table table-bordered table-hover text-center" id="equipmentList">
+			<thead>
+				<th>정보</th>
+				<th>장비명</th>
+				<th>S/N</th>
+				<th>IP</th>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						<%=mode;%>
+					</td>
+					<td><%=equipmentData.modelName%></td>
+					<td><%=equipmentData.serialNum%></td>
+					<td><%=equipmentData.ip%></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<div class="col-lg-12 col-md-12 m-t">
+	<div class="ibox-content border-gray">
+		<table class="table table-bordered table-hover text-center" id="equipmentList">
+			<thead>
+				<th>A4Color</th>
+				<th>A4Black</th>
+				<th>A3Color</th>
+				<th>A3Black</th>
+				<th>BT</th>
+				<th>CT</th>
+				<th>MT</th>
+				<th>YT</th>
+				<th>KD</th>
+				<th>CD</th>
+				<th>MD</th>
+				<th>YD</th>
+				<th>WTC</th>
+				<th>FUSER</th>
+				<th>수집시간</th>
+			</thead>
+			<tbody>
+				<%if(mode == "agent"){%>
+					<%if(equipmentData.oidValue){%>
+						<tr>
+							<%if(equipmentData.oidValue){%>
+								<td><%=Number(equipmentData.oidValue.total_color_print).toLocaleString()%></td>
+								<td><%=Number(equipmentData.oidValue.total_gray_print).toLocaleString()%></td>
+								<td><%=Number(equipmentData.oidValue.print_color_a3).toLocaleString()%></td>
+								<td><%=Number(equipmentData.oidValue.print_gray_a3).toLocaleString()%></td>
+								<%if(equipmentData.oidValue.printer_desc.indexOf("FUJI XEROX") != -1){%>
+									<td class="bTd"><%=Math.ceil(equipmentData.oidValue.toner_balck / equipmentData.somoMax.toner_balckMax * 100)%>%</td>
+									<td class="cTd"><%=Math.ceil(equipmentData.oidValue.toner_cyan / equipmentData.somoMax.toner_cyanMax * 100)%>%</td>
+									<td class="mTd"><%=Math.ceil(equipmentData.oidValue.toner_magenta / equipmentData.somoMax.toner_magentaMax * 100)%>%</td>
+									<td class="yTd"><%=Math.ceil(equipmentData.oidValue.toner_yellow / equipmentData.somoMax.toner_yellowMax * 100)%>%</td>
+									<td class="bTd"><%=Math.ceil(equipmentData.oidValue.drum_balck / equipmentData.somoMax.drum_balckMax * 100)%>%</td>
+									<td class="cTd"><%=Math.ceil(equipmentData.oidValue.drum_cyan / equipmentData.somoMax.drum_cyanMax * 100)%>%</td>
+									<td class="mTd"><%=Math.ceil(equipmentData.oidValue.drum_magenta / equipmentData.somoMax.drum_magentaMax * 100)%>%</td>
+									<td class="yTd"><%=Math.ceil(equipmentData.oidValue.drum_yellow / equipmentData.somoMax.drum_yellowMax * 100)%>%</td>
+									<td class="gTd"><%=equipmentData.oidValue.etc_hoisu%></td>
+									<td class="gTd"><%=equipmentData.oidValue.etc_install%></td>
+									<td><%=equipmentData.oidValue.update_time%></td>
+								<%}else{%>
+									<td class="bTd"><%=equipmentData.oidValue.toner_balck%>%</td>
+									<td class="cTd"><%=equipmentData.oidValue.toner_cyan%>%</td>
+									<td class="mTd"><%=equipmentData.oidValue.toner_magenta%>%</td>
+									<td class="yTd"><%=equipmentData.oidValue.toner_yellow%>%</td>
+									<td class="bTd"><%=equipmentData.oidValue.drum_balck%>%</td>
+									<td class="cTd"><%=equipmentData.oidValue.drum_cyan%>%</td>
+									<td class="mTd"><%=equipmentData.oidValue.drum_magenta%>%</td>
+									<td class="yTd"><%=equipmentData.oidValue.drum_yellow%>%</td>
+									<td class="gTd"><%=equipmentData.oidValue.etc_hoisu%></td>
+									<td class="gTd"><%=equipmentData.oidValue.etc_install%></td>
+									<td><%=equipmentData.oidValue.update_time%></td>
+								<% } %>
+							<%}else{%>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							<% } %>
+						</tr>
+					<% } %>
+				<% } %>
+				<%if(mode == "cwis"){%>
+					<%if(equipmentData.scirpingValue){%>
+						<tr>
+							<td><%=(Number(equipmentData.scirpingValue.count.total_color_print)+Number(equipmentData.scirpingValue.count.totol_color_copy)).toLocaleString()%></td>
+							<td><%=(Number(equipmentData.scirpingValue.count.total_gray_print)+Number(equipmentData.scirpingValue.count.totol_gray_copy)).toLocaleString()%></td>
+							<td></td>
+							<td></td>
+							<td class="bTd"><%=equipmentData.scirpingValue.somo.toner_balck%>%</td>
+							<td class="cTd"><%=equipmentData.scirpingValue.somo.toner_cyan%>%</td>
+							<td class="mTd"><%=equipmentData.scirpingValue.somo.toner_magenta%>%</td>
+							<td class="yTd"><%=equipmentData.scirpingValue.somo.toner_yellow%>%</td>
+							<td class="bTd"><%=equipmentData.scirpingValue.somo.drum_balck%>%</td>
+							<td class="cTd"><%=equipmentData.scirpingValue.somo.drum_cyan%>%</td>
+							<td class="mTd"><%=equipmentData.scirpingValue.somo.drum_magenta%>%</td>
+							<td class="yTd"><%=equipmentData.scirpingValue.somo.drum_yellow%>%</td>
+							<td class="gTd"><%=equipmentData.scirpingValue.somo.etc_hoisu%></td>
+							<td></td>
+							<td><%=equipmentData.scirpingValue.count.update_time%></td>
+						</tr>
+					<% } %>
+				<% } %>
+			</tbody>
+		</table>
+	</div>
+</div>
