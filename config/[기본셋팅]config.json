@@ -1,0 +1,10 @@
+[
+	{
+		"sendTime" : "1",
+		"customer" : {
+				"name" : "",
+				"seq"   : ""
+			    },
+		"ipset" : ""
+	}
+]
